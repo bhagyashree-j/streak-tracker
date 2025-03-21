@@ -89,3 +89,13 @@ button:active {
     color: red;
     font-weight: bold;
 }
+
+.achievement-badge {
+    background: #ffcc00;
+    color: #222;
+    padding: 5px;
+    margin: 5px 0;
+    font-weight: bold;
+    border-radius: 5px;
+    display: inline-block;
+}

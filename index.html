@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🔥 Progress Tracker 🔥</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0"></script>
+
 </head>
 <body>
     <div class="container">
@@ -18,8 +20,9 @@
                 <div class="streak-container">
                     <p>🔥 Streak: <span id="bhagyaStreak">0</span> Days</p>
                     <p id="bhagyaStatus" class="status">Update to keep streak alive!</p>
-                </div>
-                <button onclick="updateProgress('bhagya')">Update Streak</button>
+                    <div id="bhagyaAchievements" class="achievements"></div> <!-- Added Achievements Section -->
+                </div>                
+                <button id="bhagyaButton" onclick="updateProgress('bhagya')">Update Streak</button>
             </div>
             
             <div class="user" id="pragnya">
@@ -28,8 +31,9 @@
                 <div class="streak-container">
                     <p>🔥 Streak: <span id="pragnyaStreak">0</span> Days</p>
                     <p id="pragnyaStatus" class="status">Update to keep streak alive!</p>
+                    <div id="pragnyaAchievements" class="achievements"></div>
                 </div>
-                <button onclick="updateProgress('pragnya')">Update Streak</button>
+                <button id="pragnyaButton" onclick="updateProgress('pragnya')">Update Streak</button>
             </div>
         </div>
 
