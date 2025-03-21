@@ -10,6 +10,14 @@ checkStreakExpiration('bhagya');
 checkStreakExpiration('pragnya');
 
 function updateProgress(user) {
+    let lastUpdate = localStorage.getItem('lastUpdate' + capitalize(user));
+    let today = new Date().toDateString();
+
+    if (lastUpdate && new Date(lastUpdate).toDateString() === today) {
+        alert("You've already updated your streak today! Come back tomorrow.");
+        return;
+    }
+
     let streakSpan = document.getElementById(user + "Streak");
     let statusText = document.getElementById(user + "Status");
 
@@ -33,9 +41,10 @@ function checkStreakExpiration(user) {
     let lastUpdateDate = new Date(lastUpdate);
     let currentDate = new Date();
 
-    let timeDiff = Math.floor((currentDate - lastUpdateDate) / (1000 * 60 * 60 * 24));
+    let lastRecordedDate = lastUpdateDate.toDateString();
+    let today = currentDate.toDateString();
 
-    if (timeDiff >= 1) {
+    if (lastRecordedDate !== today) {
         document.getElementById(user + "Streak").textContent = "0";
         document.getElementById(user + "Status").textContent = "🔥 Streak lost!";
         document.getElementById(user + "Status").classList.add("lost-streak");
@@ -53,9 +62,28 @@ function updateClock() {
     document.getElementById("bhagyaClock").textContent = `🇮🇳 IST: ${istTime}`;
     document.getElementById("pragnyaClock").textContent = `🇺🇸 PST: ${pstTime}`;
 }
+function resetStreak(user) {
+    localStorage.setItem(user + 'Streak', 0);
+    localStorage.setItem('lastUpdate' + capitalize(user), null);
+
+    document.getElementById(user + "Streak").textContent = "0";
+    document.getElementById(user + "Status").textContent = "🔥 Streak lost!";
+    document.getElementById(user + "Status").classList.add("lost-streak");
+}
+
+
+function startConfetti() {
+    confetti({
+        particleCount: 100,
+        spread: 80,
+        origin: { y: 0.7}
+    });
+}
+
 
 setInterval(updateClock, 1000);
 updateClock();
+
 
 function capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
