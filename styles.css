@@ -5,6 +5,7 @@ body {
     color: white;
     margin: 0;
     padding: 20px;
+    overflow: hidden;
 }
 
 .container {
@@ -73,39 +74,18 @@ button {
     font-size: 16px;
     border-radius: 5px;
     margin-top: 10px;
-    transition: background 0.3s;
+    transition: transform 0.2s ease-in-out;
 }
 
 button:hover {
     background-color: #ff5733;
 }
 
+button:active {
+    transform: scale(0.95);
+}
+
 .lost-streak {
     color: red;
     font-weight: bold;
-}
-
-/* Keep Going Messages */
-.keep-going {
-    font-size: 14px;
-    font-weight: bold;
-    color: #00ff7f;
-    margin-top: 10px;
-}
-
-/* Fireworks Celebration Effect */
-#celebration {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: none;
-    font-size: 50px;
-    color: gold;
-    animation: fadeOut 2s forwards;
-}
-
-@keyframes fadeOut {
-    0% { opacity: 1; }
-    100% { opacity: 0; display: none; }
 }
