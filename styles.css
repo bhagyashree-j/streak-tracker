@@ -1,0 +1,111 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #222;
+    color: white;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: #333;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 69, 0, 0.5);
+}
+
+h1 {
+    color: #ff4500;
+    margin-bottom: 10px;
+}
+
+.motivation {
+    font-size: 18px;
+    color: #ffcc00;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.dashboard {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.user {
+    background: #444;
+    padding: 20px;
+    border-radius: 10px;
+    width: 40%;
+    box-shadow: 0 0 10px rgba(255, 165, 0, 0.3);
+}
+
+h2 {
+    color: #ffcc00;
+}
+
+.clock {
+    font-size: 16px;
+    font-weight: bold;
+    color: #00ff7f;
+    margin-bottom: 10px;
+}
+
+.streak-container {
+    font-size: 20px;
+    margin: 10px 0;
+}
+
+.status {
+    font-size: 14px;
+    color: #ffcc00;
+    margin-top: 10px;
+}
+
+button {
+    background-color: #ff4500;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    margin-top: 10px;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background-color: #ff5733;
+}
+
+.lost-streak {
+    color: red;
+    font-weight: bold;
+}
+
+/* Keep Going Messages */
+.keep-going {
+    font-size: 14px;
+    font-weight: bold;
+    color: #00ff7f;
+    margin-top: 10px;
+}
+
+/* Fireworks Celebration Effect */
+#celebration {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    font-size: 50px;
+    color: gold;
+    animation: fadeOut 2s forwards;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; display: none; }
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔥 Progress Tracker 🔥</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🔥 Keep Your Streak Alive! 🔥</h1>
+        <p class="motivation" id="motivationText">Don't let the fire go out! Stay consistent and keep pushing forward. 🚀</p>
+        
+        <div class="dashboard">
+            <div class="user" id="bhagya">
+                <h3 class="clock" id="bhagyaClock">IST: Loading...</h3>
+                <h2>Bhagya</h2>
+                <div class="streak-container">
+                    <p>🔥 Streak: <span id="bhagyaStreak">0</span> Days</p>
+                    <p id="bhagyaStatus" class="status">Update to keep streak alive!</p>
+                </div>
+                <button onclick="updateProgress('bhagya')">Update Streak</button>
+            </div>
+            
+            <div class="user" id="pragnya">
+                <h3 class="clock" id="pragnyaClock">PST: Loading...</h3>
+                <h2>Pragnya</h2>
+                <div class="streak-container">
+                    <p>🔥 Streak: <span id="pragnyaStreak">0</span> Days</p>
+                    <p id="pragnyaStatus" class="status">Update to keep streak alive!</p>
+                </div>
+                <button onclick="updateProgress('pragnya')">Update Streak</button>
+            </div>
+        </div>
+
+        <div id="celebration"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
