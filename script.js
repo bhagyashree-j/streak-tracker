@@ -88,3 +88,46 @@ updateClock();
 function capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
+const problemData = {
+    "array": ["Contains Duplicate", "Valid Anagram", "Two Sum", "Group Anagrma"],
+    "twoPointers": ["Valid Palindrome", "Two Sum II", "Remove Duplicates"],
+    "slidingWindow": ["Longest Substring Without Repeating", "Permutation in String"]
+};
+
+const completedProblems = JSON.parse(localStorage.getItem("completedProblems")) || {};
+
+function renderProblems() {
+    Object.keys(problemData).forEach(category => {
+        const problemList = document.getElementById(`${category}Problems`);
+        problemList.innerHTML = "";
+        
+        problemData[category].forEach(problem => {
+            const li = document.createElement("li");
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.checked = completedProblems[problem] || false;
+            checkbox.addEventListener("change", () => {
+                completedProblems[problem] = checkbox.checked;
+                localStorage.setItem("completedProblems", JSON.stringify(completedProblems));
+            });
+
+            li.appendChild(checkbox);
+            li.appendChild(document.createTextNode(problem));
+            problemList.appendChild(li);
+        });
+    });
+}
+
+// Collapsible Functionality
+document.querySelectorAll(".collapsible").forEach(button => {
+    button.addEventListener("click", function () {
+        this.classList.toggle("active");
+        let content = this.nextElementSibling;
+        content.style.display = (content.style.display === "block") ? "none" : "block";
+    });
+});
+
+renderProblems();
+
+
+renderProblems();
