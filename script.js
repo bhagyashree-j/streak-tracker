@@ -171,3 +171,57 @@ function capitalize(str) {
 // Update the clock every second
 setInterval(updateClock, 1000);
 updateClock();
+
+// Problem tracking functionality
+const problemData = {
+    "array": ["Contains Duplicate", "Valid Anagram", "Two Sum", "Group Anagram, Top K Frequent ELements, Encode and Decode Strings, Product of Array Except Self, Longest Consecutive Squence "],
+    "twoPointers": ["Valid Palindrome", "3Sum", "Container With Most Water"],
+    "slidingWindow": ["Best Time to Buy and Sell Stock","Longest Substring Without Repeating", "Longest Repeating Character Replacement", "Minimum Window Substring"],
+    "stack" : ["Valid Parentheses"],
+    "binary" : ["Find Minimum In Rotated Sorted Array","Search In Rotated Sorted Array"],
+    "linkedList" : [""]
+};
+
+const completedProblems = JSON.parse(localStorage.getItem("completedProblems")) || {};
+
+function renderProblems() {
+    Object.keys(problemData).forEach(category => {
+        const problemList = document.getElementById(`${category}Problems`);
+        if (!problemList) return; // Skip if element doesn't exist
+        
+        problemList.innerHTML = "";
+        
+        problemData[category].forEach(problem => {
+            if (!problem.trim()) return; // Skip empty problems
+            
+            const li = document.createElement("li");
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.checked = completedProblems[problem] || false;
+            checkbox.addEventListener("change", () => {
+                completedProblems[problem] = checkbox.checked;
+                localStorage.setItem("completedProblems", JSON.stringify(completedProblems));
+            });
+
+            li.appendChild(checkbox);
+            li.appendChild(document.createTextNode(problem));
+            problemList.appendChild(li);
+        });
+    });
+}
+
+// Collapsible Functionality - Only run if elements exist
+document.addEventListener('DOMContentLoaded', function() {
+    if (document.querySelectorAll(".collapsible").length > 0) {
+        document.querySelectorAll(".collapsible").forEach(button => {
+            button.addEventListener("click", function () {
+                this.classList.toggle("active");
+                let content = this.nextElementSibling;
+                content.style.display = (content.style.display === "block") ? "none" : "block";
+            });
+        });
+        
+        // Initialize problems if the elements exist
+        renderProblems();
+    }
+});
