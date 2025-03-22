@@ -90,6 +90,7 @@ button:active {
     font-weight: bold;
 }
 
+/* Achievements styles from milestones branch */
 .achievement-badge {
     background: #ffcc00;
     color: #222;
