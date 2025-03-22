@@ -89,18 +89,48 @@ button:active {
     font-weight: bold;
 }
 
-
-.container {
-    width: 50%;
-    margin: auto;
-    font-family: Arial, sans-serif;
+/* Achievements styles from milestones branch */
+.achievement-badge {
+    background: #ffcc00;
+    color: #222;
+    padding: 5px;
+    margin: 5px 0;
+    font-weight: bold;
+    border-radius: 5px;
+    display: inline-block;
 }
 
-h2 {
-    text-align: center;
-    color: #fff;
+.achievements {
+    margin: 10px 0;
+    min-height: 30px;
 }
 
+.admin-controls {
+    margin-top: 20px;
+    padding: 10px;
+    background: #444;
+    border-radius: 10px;
+}
+
+.info-section {
+    margin-top: 20px;
+    padding: 10px;
+    background: #444;
+    border-radius: 10px;
+    text-align: left;
+}
+
+.info-section h3 {
+    color: #ffcc00;
+    margin-top: 5px;
+}
+
+.info-section p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+/* Problem tracker styles from main branch */
 .category {
     margin-bottom: 10px;
 }
@@ -143,4 +173,3 @@ input[type="checkbox"] {
     margin-right: 10px;
     transform: scale(1.2);
 }
-

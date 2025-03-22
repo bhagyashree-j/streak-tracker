@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Streak Tracker </title>
+    <title>Streak Tracker</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0"></script>
 </head>
 <body>
     <div class="container">
@@ -18,8 +19,9 @@
                 <div class="streak-container">
                     <p>🔥 Streak: <span id="bhagyaStreak">0</span> Days</p>
                     <p id="bhagyaStatus" class="status">Update to keep streak alive!</p>
-                </div>
-                <button onclick="updateProgress('bhagya')">Update Streak</button>
+                    <div id="bhagyaAchievements" class="achievements"></div>
+                </div>                
+                <button id="bhagyaButton" onclick="updateProgress('bhagya')">Update Streak</button>
             </div>
             
             <div class="user" id="pragnya">
@@ -28,14 +30,23 @@
                 <div class="streak-container">
                     <p>🔥 Streak: <span id="pragnyaStreak">0</span> Days</p>
                     <p id="pragnyaStatus" class="status">Update to keep streak alive!</p>
+                    <div id="pragnyaAchievements" class="achievements"></div>
                 </div>
-                <button onclick="updateProgress('pragnya')">Update Streak</button>
+                <button id="pragnyaButton" onclick="updateProgress('pragnya')">Update Streak</button>
             </div>
         </div>
-        <button onclick="resetStreak('bhagya')">Reset Streak</button>
-<button onclick="resetStreak('pragnya')">Reset Streak</button>
-
-
+        
+        <div class="admin-controls">
+            <button onclick="resetStreak('bhagya')">Reset Bhagya's Streak</button>
+            <button onclick="resetStreak('pragnya')">Reset Pragnya's Streak</button>
+        </div>
+        
+        <div class="info-section">
+            <h3>How It Works</h3>
+            <p>• Update once per day in your timezone</p>
+            <p>• Streak resets if not updated within 24 hours</p>
+            <p>• Earn badges at 5, 10, 30, 50 and 100 days</p>
+        </div>
     </div>
     <div class="container">
         <h2>NeetCode Streak Tracker</h2>
@@ -89,9 +100,6 @@
     </div>
     
     
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0"></script>
-
     <script src="script.js"></script>
-    <script src="confetti.js"></script> 
 </body>
 </html>
