@@ -19,6 +19,14 @@ const milestones = {
 };
 
 function updateProgress(user) {
+    let lastUpdate = localStorage.getItem('lastUpdate' + capitalize(user));
+    let today = new Date().toDateString();
+
+    if (lastUpdate && new Date(lastUpdate).toDateString() === today) {
+        alert("You've already updated your streak today! Come back tomorrow.");
+        return;
+    }
+
     let streakSpan = document.getElementById(user + "Streak");
     let statusText = document.getElementById(user + "Status");
 
@@ -56,15 +64,13 @@ function checkStreakExpiration(user) {
     let lastUpdateUTC = localStorage.getItem('lastUpdate' + capitalize(user));
     if (!lastUpdateUTC) return;
 
-    let userTimezone = user === "bhagya" ? "Asia/Kolkata" : "America/Los_Angeles";
+    let lastUpdateDate = new Date(lastUpdate);
+    let currentDate = new Date();
 
-    let lastUpdateLocal = new Date(new Date(lastUpdateUTC).toLocaleString("en-US", { timeZone: userTimezone }));
-    let currentLocal = new Date(new Date().toLocaleString("en-US", { timeZone: userTimezone }));
+    let lastRecordedDate = lastUpdateDate.toDateString();
+    let today = currentDate.toDateString();
 
-    lastUpdateLocal.setHours(0, 0, 0, 0);
-    currentLocal.setHours(0, 0, 0, 0);
-
-    if (currentLocal > lastUpdateLocal) {
+    if (lastRecordedDate !== today) {
         document.getElementById(user + "Streak").textContent = "0";
         document.getElementById(user + "Status").textContent = "🔥 Streak lost!";
         document.getElementById(user + "Status").classList.add("lost-streak");
@@ -82,9 +88,28 @@ function updateClock() {
     document.getElementById("bhagyaClock").textContent = `🇮🇳 IST: ${istTime}`;
     document.getElementById("pragnyaClock").textContent = `🇺🇸 PST: ${pstTime}`;
 }
+function resetStreak(user) {
+    localStorage.setItem(user + 'Streak', 0);
+    localStorage.setItem('lastUpdate' + capitalize(user), null);
+
+    document.getElementById(user + "Streak").textContent = "0";
+    document.getElementById(user + "Status").textContent = "🔥 Streak lost!";
+    document.getElementById(user + "Status").classList.add("lost-streak");
+}
+
+
+function startConfetti() {
+    confetti({
+        particleCount: 100,
+        spread: 80,
+        origin: { y: 0.7}
+    });
+}
+
 
 setInterval(updateClock, 1000);
 updateClock();
+
 
 function capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
