@@ -89,9 +89,12 @@ function capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 const problemData = {
-    "array": ["Contains Duplicate", "Valid Anagram", "Two Sum", "Group Anagrma"],
-    "twoPointers": ["Valid Palindrome", "Two Sum II", "Remove Duplicates"],
-    "slidingWindow": ["Longest Substring Without Repeating", "Permutation in String"]
+    "array": ["Contains Duplicate", "Valid Anagram", "Two Sum", "Group Anagram, Top K Frequent ELements, Encode and Decode Strings, Product of Array Except Self, Longest Consecutive Squence "],
+    "twoPointers": ["Valid Palindrome", "3Sum", "Container With Most Water"],
+    "slidingWindow": ["Best Time to Buy and Sell Stock","Longest Substring Without Repeating", "Longest Repeating Character Replacement", "Minimum Window Substring"],
+    "stack" : ["Valid Parentheses"],
+    "binary" : ["Find Minimum In Rotated Sorted Array","Search In Rotated Sorted Array"],
+    "linkedList" : [""]
 };
 
 const completedProblems = JSON.parse(localStorage.getItem("completedProblems")) || {};
