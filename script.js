@@ -174,7 +174,7 @@ updateClock();
 
 // Problem tracking functionality
 const problemData = {
-    "array": ["Contains Duplicate", "Valid Anagram", "Two Sum", "Group Anagram, Top K Frequent ELements, Encode and Decode Strings, Product of Array Except Self, Longest Consecutive Squence "],
+    "array": ["Contains Duplicate", "Valid Anagram", "Two Sum", "Group Anagram", "Top K Frequent ELements", "Encode and Decode Strings", "Product of Array Except Self", "Longest Consecutive Squence "],
     "twoPointers": ["Valid Palindrome", "3Sum", "Container With Most Water"],
     "slidingWindow": ["Best Time to Buy and Sell Stock","Longest Substring Without Repeating", "Longest Repeating Character Replacement", "Minimum Window Substring"],
     "stack" : ["Valid Parentheses"],
