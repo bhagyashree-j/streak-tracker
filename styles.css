@@ -1,8 +1,8 @@
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-    background-color: #222;
-    color: white;
+    background-color: #FFF7F3;
+    color: #333333;
     margin: 0;
     padding: 20px;
     overflow-x: hidden;
@@ -11,24 +11,26 @@ body {
 .container {
     max-width: 800px;
     margin: auto;
-    background: #333;
+    background: #fbf2edda;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(255, 69, 0, 0.5);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
-    color: #ff4500;
+    color: #8e6c82;
+    /* color: #E6B2BA; */
     margin-bottom: 10px;
 }
 
 h2 {
-    color: #ffcc00;
+    color: #8e6c82;
+    /* color: #E6B2BA; */
 }
 
 .motivation {
     font-size: 18px;
-    color: #ffcc00;
+    /* color: #C599B6; */
     font-weight: bold;
     margin-bottom: 20px;
 }
@@ -40,17 +42,17 @@ h2 {
 }
 
 .user {
-    background: #444;
+    background: #FFF7F3;
     padding: 20px;
     border-radius: 10px;
     width: 40%;
-    box-shadow: 0 0 10px rgba(255, 165, 0, 0.3);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
 }
 
 .clock {
     font-size: 16px;
     font-weight: bold;
-    color: #00ff7f;
+    color: #C599B6;
     margin-bottom: 10px;
 }
 
@@ -61,12 +63,13 @@ h2 {
 
 .status {
     font-size: 14px;
-    color: #ffcc00;
+    color: #000;
     margin-top: 10px;
 }
 
 button {
-    background-color: #ff4500;
+    /* background-color: #C599B6; */
+    background-color: #C599B6;
     color: white;
     border: none;
     padding: 10px;
@@ -74,11 +77,11 @@ button {
     font-size: 16px;
     border-radius: 5px;
     margin-top: 10px;
-    transition: transform 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out;
 }
 
 button:hover {
-    background-color: #ff5733;
+    background-color: #A87F98;
 }
 
 button:active {
@@ -91,8 +94,8 @@ button:active {
 }
 
 .achievement-badge {
-    background: #ffcc00;
-    color: #222;
+    background: #E6B2BA;
+    color: white;
     padding: 5px;
     margin: 5px 0;
     font-weight: bold;
@@ -108,20 +111,20 @@ button:active {
 .admin-controls {
     margin-top: 20px;
     padding: 10px;
-    background: #444;
+    background: #FFF7F3;
     border-radius: 10px;
 }
 
 .info-section {
     margin-top: 20px;
     padding: 10px;
-    background: #444;
+    background: #FFF7F3;
     border-radius: 10px;
     text-align: left;
 }
 
 .info-section h3 {
-    color: #ffcc00;
+    color: #C599B6;
     margin-top: 5px;
 }
 
@@ -133,14 +136,14 @@ button:active {
 /* Problem Tracker Styles */
 .problem-tracker {
     margin-top: 30px;
-    background: #444;
+    background: #FFF7F3;
     padding: 20px;
     border-radius: 10px;
     text-align: left;
 }
 
 .collapsible {
-    background-color: #555;
+    background-color: #C599B6;
     color: white;
     cursor: pointer;
     padding: 12px;
@@ -154,14 +157,14 @@ button:active {
 }
 
 .active, .collapsible:hover {
-    background-color: #666;
+    background-color: #A87F98;
 }
 
 .content {
     padding: 0 18px;
     display: none;
     overflow: hidden;
-    background-color: #3a3a3a;
+    background-color: #f0e9e5;
     border-radius: 0 0 5px 5px;
 }
 
@@ -172,7 +175,7 @@ button:active {
 
 .content li {
     padding: 8px 0;
-    border-bottom: 1px solid #444;
+    border-bottom: 1px solid #E6B2BA;
 }
 
 .content li:last-child {
