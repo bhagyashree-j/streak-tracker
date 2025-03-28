@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Dashboard - Streak & Problem Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #FFF7F3;
+            color: #333333;
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fbf2edda;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        h1, h2 {
+            color: #8e6c82;
+        }
+        .motivation {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .user-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .user-info img {
+            width: 90px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid #C599B6;
+        }
+        .user-info-text {
+            text-align: left;
+        }
+        .clock {
+            font-size: 16px;
+            font-weight: bold;
+            color: #C599B6;
+            margin-bottom: 10px;
+            text-align: right;
+        }
+        .streak-container {
+            font-size: 20px;
+            margin: 20px 0;
+            background: #FFF7F3;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+        .status {
+            font-size: 14px;
+            color: #000;
+            margin-top: 10px;
+        }
+        .achievement-badge {
+            background: #E6B2BA;
+            color: white;
+            padding: 5px;
+            margin: 5px;
+            font-weight: bold;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        .achievements {
+            margin: 10px 0;
+            min-height: 30px;
+        }
+        button {
+            background-color: #C599B6;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-top: 10px;
+            transition: background-color 0.2s ease-in-out;
+        }
+        button:hover {
+            background-color: #A87F98;
+        }
+        button:active {
+            transform: scale(0.95);
+        }
+        .lost-streak {
+            color: red;
+            font-weight: bold;
+        }
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #fbf2edda;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .nav-bar h2 {
+            margin: 0;
+            color: #8e6c82;
+        }
+        .nav-links a {
+            color: #8e6c82;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+        }
+        .nav-links a:hover {
+            color: #C599B6;
+        }
+        .collapsible {
+            background-color: #C599B6;
+            color: white;
+            cursor: pointer;
+            padding: 12px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .active, .collapsible:hover {
+            background-color: #A87F98;
+        }
+        .content {
+            padding: 0 18px;
+            display: none;
+            overflow: hidden;
+            background-color: #f0e9e5;
+            border-radius: 0 0 5px 5px;
+        }
+        .content ul {
+            list-style-type: none;
+            padding-left: 5px;
+        }
+        .content li {
+            padding: 8px 0;
+            border-bottom: 1px solid #E6B2BA;
+            text-align: left;
+        }
+        .content li:last-child {
+            border-bottom: none;
+        }
+        .content input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        .progress-summary {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        .progress-card {
+            background: #FFF7F3;
+            padding: 15px;
+            border-radius: 10px;
+            width: 30%;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+        }
+        .progress-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #C599B6;
+        }
+        .logout-btn {
+            background-color: #E6B2BA;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-bar">
+        <h2>🔥 Streak Tracker</h2>
+        <div class="nav-links">
+            <a href="#" id="show-all-btn">Compare Progress</a>
+            <a href="#" onclick="logout()" class="logout-btn">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="user-info">
+            <div class="user-info-text">
+                <h1>Welcome, <span id="userName">User</span>!</h1>
+                <p class="motivation" id="motivationText">Keep pushing forward and maintain your streak! 🚀</p>
+            </div>
+            <div>
+                <div id="userClock" class="clock">Loading time...</div>
+                <img src="/api/placeholder/80/80" alt="User avatar" id="userAvatar">
+            </div>
+        </div>
+
+        <div class="streak-container">
+            <h2>Your Current Streak</h2>
+            <p>🔥 <span id="userStreak" class="progress-number">0</span> Days</p>
+            <p id="userStatus" class="status">Update to keep streak alive!</p>
+            <div id="userAchievements" class="achievements"></div>
+            <button id="updateButton" onclick="updateStreak()">Update Today's Progress</button>
+        </div>
+
+        <div class="progress-summary">
+            <div class="progress-card">
+                <p>Problems Solved</p>
+                <div id="problemsSolved" class="progress-number">0</div>
+            </div>
+            <div class="progress-card">
+                <p>Categories Completed</p>
+                <div id="categoriesCompleted" class="progress-number">0</div>
+            </div>
+            <div class="progress-card">
+                <p>Current Pace</p>
+                <div id="currentPace" class="progress-number">0</div>
+                <div>problems/week</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>NeetCode Progress Tracker</h2>
+        
+        <div class="category" id="array">
+            <button class="collapsible">Arrays and Hashing</button>
+            <div class="content">
+                <ul id="arrayProblems"></ul>
+            </div>
+        </div>
+    
+        <div class="category" id="twoPointers">
+            <button class="collapsible">Two Pointers</button>
+            <div class="content">
+                <ul id="twoPointersProblems"></ul>
+            </div>
+        </div>
+    
+        <div class="category" id="slidingWindow">
+            <button class="collapsible">Sliding Window</button>
+            <div class="content">
+                <ul id="slidingWindowProblems"></ul>
+            </div>
+        </div>
+
+        <div class="category" id="stack">
+            <button class="collapsible">Stack</button>
+            <div class="content">
+                <ul id="stackProblems"></ul>
+            </div>
+        </div>
+
+        <div class="category" id="binarySearch">
+            <button class="collapsible">Binary Search</button>
+            <div class="content">
+                <ul id="binarySearchProblems"></ul>
+            </div>
+        </div>
+
+        <div class="category" id="linkedList">
+            <button class="collapsible">Linked List</button>
+            <div class="content">
+                <ul id="linkedListProblems"></ul>
+            </div>
+        </div>
+
+        <div class="category" id="trees">
+            <button class="collapsible">Trees</button>
+            <div class="content">
+                <ul id="treesProblems"></ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check if user is logged in
+        const currentUser = localStorage.getItem('currentUser');
+        if (!currentUser) {
+            window.location.href = 'login.html';
+        }
+        
+        // Set username in the UI
+        document.getElementById('userName').textContent = 
+            currentUser.charAt(0).toUpperCase() + currentUser.slice(1);
+        
+            setUserAvatar();
+        document.getElementById('userAvatar').alt = currentUser + "'s avatar";
+        document.addEventListener('DOMContentLoaded', function() {
+            setUserAvatar();
+        });
+        
+        // Load user data
+        let userStreak = parseInt(localStorage.getItem(currentUser + 'Streak')) || 0;
+        let lastUpdate = localStorage.getItem('lastUpdate' + capitalize(currentUser)) || null;
+        
+        document.getElementById("userStreak").textContent = userStreak;
+        
+        // Milestone definitions
+        const milestones = {
+            5: "🎖️ 5-Day Streak: You're on a roll!",
+            10: "🏆 10-Day Streak: Legendary progress!",
+            30: "🔥 30-Day Streak: Unstoppable!",
+            50: "💎 50-Day Streak: Elite consistency!",
+            100: "🚀 100-Day Streak: A true legend!"
+        };
+        
+        // Check streak expiration and update achievements on load
+        checkStreakExpiration();
+        updateAchievements();
+        updateTimeDisplay();
+        
+        function updateStreak() {
+            // Get the user's timezone
+            const userTimezone = currentUser === "bhagya" ? "Asia/Kolkata" : "America/Los_Angeles";
+            const nowUTC = new Date().toISOString();
+            
+            // Check if already updated today in user's local timezone
+            if (lastUpdate) {
+                const lastUpdateLocal = new Date(lastUpdate);
+                const currentLocal = new Date();
+                
+                // Convert both to the user's timezone for day comparison
+                const lastUpdateDay = new Date(lastUpdateLocal.toLocaleString("en-US", { timeZone: userTimezone }));
+                const currentDay = new Date(currentLocal.toLocaleString("en-US", { timeZone: userTimezone }));
+                
+                // Reset to start of day for comparison
+                lastUpdateDay.setHours(0, 0, 0, 0);
+                currentDay.setHours(0, 0, 0, 0);
+                
+                if (currentDay.getTime() === lastUpdateDay.getTime()) {
+                    alert("You have already updated your streak today! ✅");
+                    return;
+                }
+            }
+            
+            // Increment streak
+            userStreak += 1;
+            document.getElementById("userStreak").textContent = userStreak;
+            document.getElementById("userStatus").textContent = "🔥 Streak is going strong!";
+            document.getElementById("userStatus").classList.remove("lost-streak");
+            
+            // Save to localStorage
+            localStorage.setItem(currentUser + 'Streak', userStreak);
+            localStorage.setItem('lastUpdate' + capitalize(currentUser), nowUTC);
+            lastUpdate = nowUTC;
+            
+            // Update achievements
+            updateAchievements();
+            
+            // Celebration
+            startConfetti();
+        }
+        
+        function checkStreakExpiration() {
+            if (!lastUpdate) return;
+            
+            const userTimezone = currentUser === "bhagya" ? "Asia/Kolkata" : "America/Los_Angeles";
+            const lastUpdateDate = new Date(lastUpdate);
+            const currentDate = new Date();
+            
+            // Convert to user's local timezone
+            const lastUpdateLocal = new Date(lastUpdateDate.toLocaleString("en-US", { timeZone: userTimezone }));
+            const currentLocal = new Date(currentDate.toLocaleString("en-US", { timeZone: userTimezone }));
+            
+            // Reset hours to compare just dates
+            lastUpdateLocal.setHours(0, 0, 0, 0);
+            currentLocal.setHours(0, 0, 0, 0);
+            
+            // Check if more than one day has passed
+            const oneDayMs = 24 * 60 * 60 * 1000;
+            if (currentLocal.getTime() - lastUpdateLocal.getTime() > oneDayMs) {
+                userStreak = 0;
+                document.getElementById("userStreak").textContent = "0";
+                document.getElementById("userStatus").textContent = "🔥 Streak lost! Start again today.";
+                document.getElementById("userStatus").classList.add("lost-streak");
+                
+                localStorage.setItem(currentUser + 'Streak', 0);
+                localStorage.setItem('lastUpdate' + capitalize(currentUser), null);
+                lastUpdate = null;
+                
+                // Clear achievements
+                document.getElementById("userAchievements").innerHTML = "";
+            }
+        }
+        
+        function updateAchievements() {
+            const achievementsDiv = document.getElementById("userAchievements");
+            achievementsDiv.innerHTML = "";
+            
+            // Add any earned milestones
+            Object.keys(milestones).forEach(milestone => {
+                if (userStreak >= parseInt(milestone)) {
+                    const badge = document.createElement("div");
+                    badge.className = "achievement-badge";
+                    badge.textContent = milestones[milestone];
+                    achievementsDiv.appendChild(badge);
+                }
+            });
+        }
+        
+        function updateTimeDisplay() {
+            const now = new Date();
+            const timeZone = currentUser === "bhagya" ? "Asia/Kolkata" : "America/Los_Angeles";
+            const timeLabel = currentUser === "bhagya" ? "IST" : "PST";
+            const flag = currentUser === "bhagya" ? "🇮🇳" : "🇺🇸";
+            
+            const localTime = now.toLocaleTimeString("en-US", { timeZone: timeZone, hour12: true });
+            document.getElementById("userClock").textContent = `${flag} ${timeLabel}: ${localTime}`;
+        }
+        
+        function startConfetti() {
+            var duration = 3 * 1000; // 3 seconds
+            var end = Date.now() + duration;
+            
+            (function frame() {
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 }
+                });
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 }
+                });
+                
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            })();
+        }
+        
+        function capitalize(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+        
+        // Update the clock every second
+        setInterval(updateTimeDisplay, 1000);
+        
+        // Problem tracking functionality
+        const problemData = {
+            "array": ["Contains Duplicate", "Valid Anagram", "Two Sum", "Group Anagram", "Top K Frequent Elements", "Encode and Decode Strings", "Product of Array Except Self", "Longest Consecutive Sequence"],
+            "twoPointers": ["Valid Palindrome", "3Sum", "Container With Most Water"],
+            "slidingWindow": ["Best Time to Buy and Sell Stock", "Longest Substring Without Repeating", "Longest Repeating Character Replacement", "Minimum Window Substring"],
+            "stack": ["Valid Parentheses"],
+            "binarySearch": ["Find Minimum In Rotated Sorted Array", "Search In Rotated Sorted Array"],
+            "linkedList": ["Reverse Linked List", "Merge Two Sorted Lists", "Reorder List", "Remove Nth Node From End of List", "Linked List Cycle"],
+            "trees": ["Invert Binary Tree", "Maximum Depth of Binary Tree", "Same Tree", "Subtree of Another Tree", "Lowest Common Ancestor of a BST"]
+        };
+        
+        // Initialize problem tracking data structure if not exists
+        if (!localStorage.getItem(`${currentUser}Problems`)) {
+            const initialData = {};
+            
+            Object.keys(problemData).forEach(category => {
+                problemData[category].forEach(problem => {
+                    if (problem.trim()) {
+                        initialData[problem] = false;
+                    }
+                });
+            });
+            
+            localStorage.setItem(`${currentUser}Problems`, JSON.stringify(initialData));
+        }
+        
+        // Get user's completed problems
+        const userProblems = JSON.parse(localStorage.getItem(`${currentUser}Problems`)) || {};
+        
+        function renderProblems() {
+            Object.keys(problemData).forEach(category => {
+                const problemList = document.getElementById(`${category}Problems`);
+                if (!problemList) return; // Skip if element doesn't exist
+                
+                problemList.innerHTML = "";
+                
+                problemData[category].forEach(problem => {
+                    if (!problem.trim()) return; // Skip empty problems
+                    
+                    const li = document.createElement("li");
+                    const checkbox = document.createElement("input");
+                    checkbox.type = "checkbox";
+                    checkbox.checked = userProblems[problem] || false;
+                    checkbox.addEventListener("change", () => {
+                        userProblems[problem] = checkbox.checked;
+                        localStorage.setItem(`${currentUser}Problems`, JSON.stringify(userProblems));
+                        updateProgressStats();
+                    });
+
+                    li.appendChild(checkbox);
+                    li.appendChild(document.createTextNode(problem));
+                    problemList.appendChild(li);
+                });
+            });
+            
+            updateProgressStats();
+        }
+        
+        function updateProgressStats() {
+            // Count problems solved
+            const solved = Object.values(userProblems).filter(done => done).length;
+            const total = Object.values(userProblems).length;
+            document.getElementById("problemsSolved").textContent = solved;
+            
+            // Count categories completed
+            let completedCategories = 0;
+            Object.keys(problemData).forEach(category => {
+                const categoryProblems = problemData[category];
+                const allDone = categoryProblems.every(problem => userProblems[problem]);
+                if (allDone && categoryProblems.length > 0) {
+                    completedCategories++;
+                }
+            });
+            document.getElementById("categoriesCompleted").textContent = completedCategories;
+            
+            // Calculate pace (problems per week) - simplified version
+            const pace = Math.round((solved / (userStreak || 1)) * 7);
+            document.getElementById("currentPace").textContent = pace;
+        }
+        
+        // Collapsible Functionality
+        document.querySelectorAll(".collapsible").forEach(button => {
+            button.addEventListener("click", function() {
+                this.classList.toggle("active");
+                let content = this.nextElementSibling;
+                content.style.display = (content.style.display === "block") ? "none" : "block";
+            });
+        });
+        function setUserAvatar() {
+    const avatar = document.getElementById('userAvatar');
+    const currentUser = localStorage.getItem('currentUser');
+    
+    // Set the appropriate image source based on the current user
+    if (currentUser === 'bhagya') {
+        avatar.src = 'bhagya.jpg'; // Use the same image filename you have in comparison.html
+    } else if (currentUser === 'pragnya') {
+        avatar.src = 'prag.jpg'; // Use the same image filename you have in comparison.html
+    } else {
+        // Fallback image if user is unknown
+        avatar.src = '/api/placeholder/80/80'; 
+    }
+    
+    // Set alt text
+    avatar.alt = currentUser ? `${currentUser}'s avatar` : 'User avatar';
+}
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'login.html';
+        }
+        
+        // Initialize problems
+        renderProblems();
+        
+        // Show comparison page
+        document.getElementById('show-all-btn').addEventListener('click', function() {
+            window.location.href = 'comparison.html';
+        });
+    </script>
+</body>
+</html>

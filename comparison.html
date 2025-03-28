@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparison Dashboard - Streak & Problem Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #FFF7F3;
+            color: #333333;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .page-content {
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: auto;
+            background: #fbf2edda;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #8e6c82;
+        }
+
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: #fbf2edda;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-bar h2 {
+            margin: 0;
+            color: #8e6c82;
+        }
+
+        .nav-links a {
+            color: #8e6c82;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+        }
+
+        .nav-links a:hover {
+            color: #C599B6;
+        }
+
+        .comparison-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            gap: 40px;
+        }
+
+        .user-column {
+            background: #FFF7F3;
+            padding: 20px;
+            border-radius: 10px;
+            width: 48%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .user-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .user-avatar {
+            width: 90px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid #C599B6;
+            margin-right: 15px;
+        }
+
+        .user-column h3 {
+            color: #8e6c82;
+            margin-top: 0;
+        }
+
+        .clock {
+            font-size: 16px;
+            font-weight: bold;
+            color: #C599B6;
+            margin-bottom: 10px;
+        }
+
+        .stats-container {
+            background: #e6b2ba49;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .streak-display {
+            font-size: 36px;
+            font-weight: bold;
+            color: #C599B6;
+            margin: 10px 0;
+        }
+
+        .progress-item {
+            margin: 15px 0;
+            text-align: left;
+        }
+
+        .progress-label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background-color: #f0e9e5;
+            border-radius: 10px;
+            height: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: #C599B6;
+            border-radius: 10px;
+            transition: width 0.5s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .achievement-badge {
+            background: #E6B2BA;
+            color: white;
+            padding: 5px;
+            margin: 5px;
+            font-weight: bold;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        .achievements {
+            margin: 10px 0;
+            min-height: 30px;
+        }
+
+        button {
+            background-color: #C599B6;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-top: 10px;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #A87F98;
+        }
+
+        .category-progress {
+            margin-top: 20px;
+        }
+
+        .category-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #E6B2BA;
+            text-align: left;
+        }
+
+        .category-item:last-child {
+            border-bottom: none;
+        }
+
+        .category-name {
+            font-weight: bold;
+        }
+
+        .category-count {
+            color: #8e6c82;
+        }
+
+        .win-indicator {
+            font-size: 24px;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        .admin-controls {
+            margin-top: 30px;
+            padding: 20px;
+            background: #FFF7F3;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .admin-controls button {
+            margin: 0 10px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            margin-left: 10px;
+            color: white;
+        }
+
+        .status-active {
+            background-color: #6BAA75;
+        }
+
+        .status-danger {
+            background-color: #E57373;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-container {
+                flex-direction: column;
+            }
+
+            .user-column {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="nav-bar">
+        <h2>🔥 Streak Tracker</h2>
+        <div class="nav-links">
+            <div class="nav-links" id="navLinks">
+            </div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="container">
+
+            <div class="comparison-container">
+                <div class="user-column">
+                    <div class="user-header">
+                        <img src="bhagya.jpg" alt="Bhagya's avatar" class="user-avatar" id="bhagyaAvatar" width="200px"
+                            height="150px">
+                        <div>
+                            <h3>Bhagya <span id="bhagyaStatusBadge" class="status-badge status-active">Active</span>
+                            </h3>
+                            <div id="bhagyaClock" class="clock">🇮🇳 IST: Loading...</div>
+                        </div>
+                    </div>
+
+                    <div class="stats-container">
+                        <h4>Current Streak</h4>
+                        <div class="streak-display" id="bhagyaStreak">0</div>
+                        <div id="bhagyaAchievements" class="achievements"></div>
+                    </div>
+
+                    <div class="progress-item">
+                        <div class="progress-label">
+                            <span>Problems Solved</span>
+                            <span id="bhagyaSolvedCount">0/0</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="bhagyaProgressBar" style="width: 0%">0%</div>
+                        </div>
+                    </div>
+
+                    <div class="category-progress">
+                        <h4>Category Progress</h4>
+                        <div id="bhagyaCategoryList"></div>
+                    </div>
+                </div>
+
+                <div class="user-column">
+                    <div class="user-header">
+                        <img src="prag.jpg" alt="Pragnya's avatar" class="user-avatar" id="pragnyaAvatar">
+                        <div>
+                            <h3>Pragnya <span id="pragnyaStatusBadge" class="status-badge status-active">Active</span>
+                            </h3>
+                            <div id="pragnyaClock" class="clock">🇺🇸 PST: Loading...</div>
+                        </div>
+                    </div>
+
+                    <div class="stats-container">
+                        <h4>Current Streak</h4>
+                        <div class="streak-display" id="pragnyaStreak">0</div>
+                        <div id="pragnyaAchievements" class="achievements"></div>
+                    </div>
+
+                    <div class="progress-item">
+                        <div class="progress-label">
+                            <span>Problems Solved</span>
+                            <span id="pragnyaSolvedCount">0/0</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="pragnyaProgressBar" style="width: 0%">0%</div>
+                        </div>
+                    </div>
+
+                    <div class="category-progress">
+                        <h4>Category Progress</h4>
+                        <div id="pragnyaCategoryList"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-controls">
+                <h3>Admin Controls</h3>
+                <button onclick="resetStreak('bhagya')">Reset Bhagya's Streak</button>
+                <button onclick="resetStreak('pragnya')">Reset Pragnya's Streak</button>
+            </div>
+        </div>
+
+        <script>
+            // Check if user is logged in
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) {
+                window.location.href = 'login.html';
+            }
+
+            // Problem data 
+            const problemData = {
+                "array": ["Contains Duplicate", "Valid Anagram", "Two Sum", "Group Anagram", "Top K Frequent Elements", "Encode and Decode Strings", "Product of Array Except Self", "Longest Consecutive Sequence"],
+                "twoPointers": ["Valid Palindrome", "3Sum", "Container With Most Water"],
+                "slidingWindow": ["Best Time to Buy and Sell Stock", "Longest Substring Without Repeating", "Longest Repeating Character Replacement", "Minimum Window Substring"],
+                "stack": ["Valid Parentheses"],
+                "binarySearch": ["Find Minimum In Rotated Sorted Array", "Search In Rotated Sorted Array"],
+                "linkedList": ["Reverse Linked List", "Merge Two Sorted Lists", "Reorder List", "Remove Nth Node From End of List", "Linked List Cycle"],
+                "trees": ["Invert Binary Tree", "Maximum Depth of Binary Tree", "Same Tree", "Subtree of Another Tree", "Lowest Common Ancestor of a BST"]
+            };
+
+            // Milestone definitions
+            const milestones = {
+                5: "🎖️ 5-Day",
+                10: "🏆 10-Day",
+                30: "🔥 30-Day",
+                50: "💎 50-Day",
+                100: "🚀 100-Day"
+            };
+
+            // Get both users' data
+            let bhagyaStreak = parseInt(localStorage.getItem('bhagyaStreak')) || 0;
+            let pragnyaStreak = parseInt(localStorage.getItem('pragnyaStreak')) || 0;
+            let lastUpdateBhagya = localStorage.getItem('lastUpdateBhagya') || null;
+            let lastUpdatePragnya = localStorage.getItem('lastUpdatePragnya') || null;
+
+            // Initialize problem data if needed
+            if (!localStorage.getItem('bhagyaProblems')) {
+                initializeUserProblems('bhagya');
+            }
+            if (!localStorage.getItem('pragnyaProblems')) {
+                initializeUserProblems('pragnya');
+            }
+
+            // Get problem tracking data
+            const bhagyaProblems = JSON.parse(localStorage.getItem('bhagyaProblems')) || {};
+            const pragnyaProblems = JSON.parse(localStorage.getItem('pragnyaProblems')) || {};
+
+            // Update UI
+            updateDashboard();
+
+            // Update clocks
+            updateClocks();
+            setInterval(updateClocks, 1000);
+
+            function updateDashboard() {
+                // Update streak counters
+                document.getElementById('bhagyaStreak').textContent = bhagyaStreak;
+                document.getElementById('pragnyaStreak').textContent = pragnyaStreak;
+
+                // Update streak status badges
+                updateStatusBadges();
+
+                // Update achievements
+                updateUserAchievements('bhagya', bhagyaStreak);
+                updateUserAchievements('pragnya', pragnyaStreak);
+
+                // Update problem solving progress
+                updateProblemProgress();
+
+                // Update category progress
+                updateCategoryProgress();
+            }
+
+            function updateStatusBadges() {
+                const bhagyaBadge = document.getElementById('bhagyaStatusBadge');
+                const pragnyaBadge = document.getElementById('pragnyaStatusBadge');
+
+                // Check if streaks are active (updated within last 24 hours)
+                const now = new Date();
+
+                if (lastUpdateBhagya) {
+                    const lastUpdateDate = new Date(lastUpdateBhagya);
+                    const timeDiff = now - lastUpdateDate;
+                    const hoursDiff = timeDiff / (1000 * 60 * 60);
+
+                    if (hoursDiff > 24) {
+                        bhagyaBadge.textContent = "Streak lost";
+                        bhagyaBadge.className = "status-badge status-danger";
+                    }
+                }
+
+                if (lastUpdatePragnya) {
+                    const lastUpdateDate = new Date(lastUpdatePragnya);
+                    const timeDiff = now - lastUpdateDate;
+                    const hoursDiff = timeDiff / (1000 * 60 * 60);
+
+                    if (hoursDiff > 24) {
+                        pragnyaBadge.textContent = "Streak lost";
+                        pragnyaBadge.className = "status-badge status-danger";
+                    }
+                }
+            }
+
+            function updateUserAchievements(user, streak) {
+                const achievementsDiv = document.getElementById(user + 'Achievements');
+                achievementsDiv.innerHTML = "";
+
+                // Add any earned milestones
+                Object.keys(milestones).forEach(milestone => {
+                    if (streak >= parseInt(milestone)) {
+                        const badge = document.createElement("div");
+                        badge.className = "achievement-badge";
+                        badge.textContent = milestones[milestone];
+                        achievementsDiv.appendChild(badge);
+                    }
+                });
+            }
+
+            function updateProblemProgress() {
+                // Count total problems
+                const totalProblems = Object.values(problemData).flat().filter(p => p.trim()).length;
+
+                // Count solved problems for each user
+                const bhagyaSolved = Object.values(bhagyaProblems).filter(done => done).length;
+                const pragnyaSolved = Object.values(pragnyaProblems).filter(done => done).length;
+
+                // Update counters
+                document.getElementById('bhagyaSolvedCount').textContent = `${bhagyaSolved}/${totalProblems}`;
+                document.getElementById('pragnyaSolvedCount').textContent = `${pragnyaSolved}/${totalProblems}`;
+
+                // Update progress bars
+                const bhagyaPercent = Math.round((bhagyaSolved / totalProblems) * 100);
+                const pragnyaPercent = Math.round((pragnyaSolved / totalProblems) * 100);
+
+                const bhagyaBar = document.getElementById('bhagyaProgressBar');
+                const pragnyaBar = document.getElementById('pragnyaProgressBar');
+
+                bhagyaBar.style.width = `${bhagyaPercent}%`;
+                bhagyaBar.textContent = `${bhagyaPercent}%`;
+
+                pragnyaBar.style.width = `${pragnyaPercent}%`;
+                pragnyaBar.textContent = `${pragnyaPercent}%`;
+            }
+
+            function updateCategoryProgress() {
+                const bhagyaList = document.getElementById('bhagyaCategoryList');
+                const pragnyaList = document.getElementById('pragnyaCategoryList');
+
+                bhagyaList.innerHTML = "";
+                pragnyaList.innerHTML = "";
+
+                Object.keys(problemData).forEach(category => {
+                    const problems = problemData[category];
+                    if (problems.length === 0) return;
+
+                    // Calculate progress for each user
+                    const bhagyaCompleted = problems.filter(p => bhagyaProblems[p]).length;
+                    const pragnyaCompleted = problems.filter(p => pragnyaProblems[p]).length;
+
+                    // Create category items
+                    const bhagyaItem = createCategoryItem(category, bhagyaCompleted, problems.length);
+                    const pragnyaItem = createCategoryItem(category, pragnyaCompleted, problems.length);
+
+                    // Add win indicator
+                    if (bhagyaCompleted > pragnyaCompleted) {
+                        bhagyaItem.querySelector('.category-count').innerHTML += '<span class="win-indicator">🏆</span>';
+                    } else if (pragnyaCompleted > bhagyaCompleted) {
+                        pragnyaItem.querySelector('.category-count').innerHTML += '<span class="win-indicator">🏆</span>';
+                    }
+
+                    bhagyaList.appendChild(bhagyaItem);
+                    pragnyaList.appendChild(pragnyaItem);
+                });
+            }
+
+            function createCategoryItem(category, completed, total) {
+                const item = document.createElement('div');
+                item.className = 'category-item';
+
+                const displayName = category.charAt(0).toUpperCase() + category.slice(1)
+                    .replace(/([A-Z])/g, ' $1').trim();
+
+                item.innerHTML = `
+                <span class="category-name">${displayName}</span>
+                <span class="category-count">${completed}/${total}</span>
+            `;
+
+                return item;
+            }
+
+            function updateClocks() {
+                const now = new Date();
+
+                const istTime = now.toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata", hour12: true });
+                const pstTime = now.toLocaleTimeString("en-US", { timeZone: "America/Los_Angeles", hour12: true });
+
+                document.getElementById("bhagyaClock").textContent = `🇮🇳 IST: ${istTime}`;
+                document.getElementById("pragnyaClock").textContent = `🇺🇸 PST: ${pstTime}`;
+            }
+
+            function resetStreak(user) {
+                const userCapitalized = capitalize(user);
+
+                if (user === 'bhagya') {
+                    bhagyaStreak = 0;
+                    localStorage.setItem('bhagyaStreak', 0);
+                    localStorage.setItem('lastUpdateBhagya', null);
+                    lastUpdateBhagya = null;
+                } else {
+                    pragnyaStreak = 0;
+                    localStorage.setItem('pragnyaStreak', 0);
+                    localStorage.setItem('lastUpdatePragnya', null);
+                    lastUpdatePragnya = null;
+                }
+
+                updateDashboard();
+            }
+
+            function initializeUserProblems(user) {
+                const initialData = {};
+
+                Object.keys(problemData).forEach(category => {
+                    problemData[category].forEach(problem => {
+                        if (problem.trim()) {
+                            initialData[problem] = false;
+                        }
+                    });
+                });
+
+                localStorage.setItem(`${user}Problems`, JSON.stringify(initialData));
+            }
+
+            function capitalize(str) {
+                return str.charAt(0).toUpperCase() + str.slice(1);
+            }
+
+            function updateNavLinks() {
+        const navLinks = document.getElementById('navLinks');
+        const currentUser = localStorage.getItem('currentUser');
+        
+        // Clear existing links
+        navLinks.innerHTML = '';
+        
+        if (currentUser) {
+            // User is logged in
+            navLinks.innerHTML = `
+                <a href="dashboard.html">My Dashboard</a>
+                <a href="#" onclick="logout()">Logout</a>
+            `;
+        } else {
+            // User is not logged in
+            navLinks.innerHTML = `
+                <a href="login.html">Login</a>
+            `;
+        }
+    }
+    
+    // Call this function when the page loads
+    updateNavLinks();
+    
+    // Also update the existing check for user login at the top of the script section
+    // to not redirect but just update the nav links instead
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check if this script section already contains the login check
+        // If it does, you'll need to modify that check instead of adding this
+        const currentUser = localStorage.getItem('currentUser');
+        updateNavLinks(); // Update navigation based on login status
+    });
+    
+    // Updated logout function
+    function logout() {
+        localStorage.removeItem('currentUser');
+        updateNavLinks(); // Update navigation links immediately
+        
+        // If we're already on the comparison page, just update the nav
+        // Otherwise redirect to the comparison page
+        if (window.location.pathname.includes('comparison.html') || 
+            window.location.pathname === '/' || 
+            window.location.pathname === '') {
+            // Stay on the current page, just update the navigation
+        } else {
+            window.location.href = 'comparison.html';
+        }
+    }
+        </script>
+</body>
+
+</html>
